@@ -76,6 +76,7 @@ class NodeFactory {
         
         // add observer when our player.currentItem finishes player, then start playing from the beginning
         if (info.loop) {
+            // TODO: LEAKY
             NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { (notification) in
                 player.seek(to: CMTime.zero)
                 player.play()

@@ -16,14 +16,23 @@ import SwiftUI
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
-    @IBOutlet weak var messagePanel: UIView!
-    @IBOutlet weak var messageLabel: UILabel!
+//    @IBOutlet weak var messagePanel: UIView!
+//    @IBOutlet weak var messageLabel: UILabel!
     
     /// An object that detects new barcodes in the user's environment.
     let barcodeDetector = BarcodeDetector()
     
     /// An object that detects new barcodes in the user's environment.
     let nodeFactory = NodeFactory()
+    
+    // ChromeView
+    var chromeStateModel = ChromeStateModel()
+    var chromeViewController:UIHostingController<ChromeView>!
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        chromeViewController = UIHostingController<ChromeView>(rootView: ChromeView(model: chromeStateModel))
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +41,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         sceneView.session.delegate = barcodeDetector
         sceneView.showsStatistics = true
+        
+        chromeViewController.willMove(toParent: self)
+        chromeViewController.view.backgroundColor = .clear
+        updateChrome(size: view.frame.size)
+        self.addChild(chromeViewController)
+        self.view.addSubview(chromeViewController.view)
+    }
+    
+    func updateChrome(size: CGSize) {
+        chromeViewController.view.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: size.width,
+            height: size.height * 0.2)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateChrome(size: size)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateChrome), name: UIDevice.orientationDidChangeNotification, object: nil)
         
         // Prevent the screen from being dimmed after a while.
         UIApplication.shared.isIdleTimerDisabled = true
@@ -43,12 +72,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Restart the session and remove any image anchors that may have been detected previously.
         runImageTrackingSession(with: [], runOptions: [.removeExistingAnchors, .resetTracking])
         
+        chromeStateModel.title = "Look for a QR code."
 //        showMessage("Look for a rectangular image.", autoHide: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneView.session.pause()
+//        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     /// - Tag: ImageTrackingSession
@@ -63,29 +94,29 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Message
     
     // The timer for message presentation.
-    var messageHideTimer: Timer?
-    
-    func showMessage(_ message: String, autoHide: Bool = true) {
-        DispatchQueue.main.async {
-            self.messageLabel.text = message
-            self.setMessageHidden(false)
-            
-            self.messageHideTimer?.invalidate()
-            if autoHide {
-                self.messageHideTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
-                    self?.setMessageHidden(true)
-                }
-            }
-        }
-    }
-    
-    func setMessageHidden(_ hide: Bool) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState], animations: {
-                self.messagePanel.alpha = hide ? 0 : 1
-            })
-        }
-    }
+//    var messageHideTimer: Timer?
+//
+//    func showMessage(_ message: String, autoHide: Bool = true) {
+//        DispatchQueue.main.async {
+//            self.messageLabel.text = message
+//            self.setMessageHidden(false)
+//
+//            self.messageHideTimer?.invalidate()
+//            if autoHide {
+//                self.messageHideTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
+//                    self?.setMessageHidden(true)
+//                }
+//            }
+//        }
+//    }
+//
+//    func setMessageHidden(_ hide: Bool) {
+//        DispatchQueue.main.async {
+//            UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState], animations: {
+//                self.messagePanel.alpha = hide ? 0 : 1
+//            })
+//        }
+//    }
     
     // MARK: - ARSCNViewDelegate
     
