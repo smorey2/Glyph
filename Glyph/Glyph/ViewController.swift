@@ -91,7 +91,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let imageAnchor = anchor as? ARImageAnchor else { return nil }
-        return nodeFactory.factory(for: imageAnchor)
+        return nodeFactory.create(for: imageAnchor)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {

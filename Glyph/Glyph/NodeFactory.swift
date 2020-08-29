@@ -16,36 +16,56 @@ class NodeFactory {
     // Callback
     public weak var parent: UIViewController?
     
-    // MARK: - ARSCNViewDelegate
+    // Shared session
+    let session: URLSession = URLSession.shared
     
-    func factory(for imageAnchor: ARImageAnchor) -> SCNNode? {
+    // MARK: - Factory
+    
+    func create(for imageAnchor: ARImageAnchor) -> SCNNode? {
+        let node = SCNNode()
+        node.opacity = 0.5
+        
         // Create a plan that has the same real world height and width as our detected image
-        let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width * 2,
-                             height: imageAnchor.referenceImage.physicalSize.height * 2)
+        let chrome:CGFloat = 0.03
+        let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width + chrome,
+                             height: imageAnchor.referenceImage.physicalSize.height + chrome)
         
         // Create a node out of the plane
         let planeNode = SCNNode(geometry: plane)
         planeNode.eulerAngles.x = -.pi / 2
+        node.addChildNode(planeNode)
         
+        let url = URL(string: "http://192.168.1.3/Glyph/image.json")!
+        session.dataTask(with: url, completionHandler: { (data, response, error) in
+            guard let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
+                node.opacity = 0
+                return
+            }
+            self.factory(json: json, plane: plane, planeNode: planeNode)
+            node.opacity = 1
+        }).resume()
+
+        // return node
+        return node
+    }
+        
+    func factory(json: [String:Any], plane: SCNPlane, planeNode: SCNNode) {
+        print(json)
         // Factory
-        let type = "button"
+        let type = "image"
         switch type {
-        case "image": createHostingController(for: planeNode, view: ImageView())
-        case "avplayer": createAVPlayer(for: plane, url: URL(string: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4")!)
+        case "image": createHostingController(for: planeNode, view: ImageView(info: ImageInfo()))
+        case "avplayer": createAVPlayer(for: plane, info: AVPlayerInfo())
         case "ui": createHostingController(for: planeNode, view: SampleView())
-        case "browser": createHostingController(for: planeNode, view: BrowserView())
-        case "button": createHostingController(for: planeNode, view: ButtonView())
+        case "web": createHostingController(for: planeNode, view: WebContentView())
+        case "button": createHostingController(for: planeNode, view: ButtonView(info: ButtonInfo()))
         default:
             print("unknown \(type)")
         }
-        
-        // Create a node out of the plane
-        let node = SCNNode()
-        node.addChildNode(planeNode)
-        return node
     }
     
-    func createImage(for plane: SCNPlane, url: URL) {
+    func createAVPlayer(for plane: SCNPlane, info: AVPlayerInfo) {
+        let url = URL(string: info.url)!
         
         // find our video file
         let videoItem = AVPlayerItem(url: url)
@@ -55,42 +75,12 @@ class NodeFactory {
         player.play()
         
         // add observer when our player.currentItem finishes player, then start playing from the beginning
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { (notification) in
-            player.seek(to: CMTime.zero)
-            player.play()
-            print("Looping Video")
-        }
-        
-        // set the size (just a rough one will do)
-        let videoScene = SKScene(size: CGSize(width: 480, height: 360))
-        
-        // center our video to the size of our video scene
-        videoNode.position = CGPoint(x: videoScene.size.width / 2, y: videoScene.size.height / 2)
-        
-        // invert our video so it does not look upside down
-        videoNode.yScale = -1.0
-        
-        // add the video to our scene
-        videoScene.addChild(videoNode)
-
-        // set the first materials content to be our video scene
-        plane.firstMaterial?.diffuse.contents = videoScene
-    }
-    
-    func createAVPlayer(for plane: SCNPlane, url: URL) {
-        
-        // find our video file
-        let videoItem = AVPlayerItem(url: url)
-        let player = AVPlayer(playerItem: videoItem)
-        let videoNode = SKVideoNode(avPlayer: player)
-          
-        player.play()
-        
-        // add observer when our player.currentItem finishes player, then start playing from the beginning
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { (notification) in
-            player.seek(to: CMTime.zero)
-            player.play()
-            print("Looping Video")
+        if (info.loop) {
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { (notification) in
+                player.seek(to: CMTime.zero)
+                player.play()
+                print("Looping Video")
+            }
         }
         
         // set the size (just a rough one will do)
