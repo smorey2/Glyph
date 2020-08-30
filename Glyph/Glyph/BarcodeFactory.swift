@@ -1,5 +1,5 @@
 //
-//  NodeHandler.swift
+//  BarcodeFactory.swift
 //  Glyph
 //
 //  Created by Sky Morey on 8/24/20.
@@ -11,19 +11,16 @@ import SceneKit
 import ARKit
 import SwiftUI
 
-class NodeFactory {
-
-    // Callback
-    public weak var parent: UIViewController?
+class BarcodeFactory {
     
-    // Shared session
-    let session: URLSession = URLSession.shared
+    // Parent
+    public weak var parent: UIViewController?
     
     // MARK: - Factory
     
     func create(for imageAnchor: ARImageAnchor) -> SCNNode? {
         let node = SCNNode()
-        node.opacity = 0.5
+        node.opacity = 1
         
         // Create a plan that has the same real world height and width as our detected image
         let chrome:CGFloat = 0.03
@@ -35,34 +32,26 @@ class NodeFactory {
         planeNode.eulerAngles.x = -.pi / 2
         node.addChildNode(planeNode)
         
-        let url = URL(string: "http://192.168.1.3/Glyph/image.json")!
-        session.dataTask(with: url, completionHandler: { (data, response, error) in
-            guard let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else {
-                node.opacity = 0
-                return
-            }
-            self.factory(json: json, plane: plane, planeNode: planeNode)
-            node.opacity = 1
-        }).resume()
-
+        // factory
+        let type = BarcodeType.ui
+        self.factory(type: type, data: [], plane: plane, planeNode: planeNode)
+        
         // return node
         return node
     }
-        
-    func factory(json: [String:Any], plane: SCNPlane, planeNode: SCNNode) {
-        print(json)
-        // Factory
-        let type = "image"
+    
+    func factory(type: BarcodeType, data: Any, plane: SCNPlane, planeNode: SCNNode) {
         switch type {
-        case "image": createHostingController(for: planeNode, view: ImageView(info: ImageInfo()))
-        case "avplayer": createAVPlayer(for: plane, info: AVPlayerInfo())
-        case "ui": createHostingController(for: planeNode, view: SampleView())
-        case "web": createHostingController(for: planeNode, view: WebContentView())
-        case "button": createHostingController(for: planeNode, view: ButtonView(info: ButtonInfo()))
-        default:
-            print("unknown \(type)")
+        case .image: createHostingController(for: planeNode, view: ImageView(info: ImageInfo()))
+        case .avplayer: createAVPlayer(for: plane, info: AVPlayerInfo())
+        case .ui: createHostingController(for: planeNode, view: SampleView())
+        case .web: createHostingController(for: planeNode, view: WebContentView())
+        case .button: createHostingController(for: planeNode, view: ButtonView(info: ButtonInfo()))
+        default: print("type \(type)")
         }
     }
+    
+    // MARK: - AVPlayer
     
     func createAVPlayer(for plane: SCNPlane, info: AVPlayerInfo) {
         let url = URL(string: info.url)!
@@ -71,7 +60,7 @@ class NodeFactory {
         let videoItem = AVPlayerItem(url: url)
         let player = AVPlayer(playerItem: videoItem)
         let videoNode = SKVideoNode(avPlayer: player)
-          
+        
         player.play()
         
         // add observer when our player.currentItem finishes player, then start playing from the beginning
@@ -95,10 +84,12 @@ class NodeFactory {
         
         // add the video to our scene
         videoScene.addChild(videoNode)
-
+        
         // set the first materials content to be our video scene
         plane.firstMaterial?.diffuse.contents = videoScene
     }
+    
+    // MARK: - SwiftUI
     
     func createHostingController<Content>(for node: SCNNode, view: Content) where Content : View {
         // create a hosting controller with SwiftUI view
@@ -119,11 +110,11 @@ class NodeFactory {
             parent.view.addSubview(arVC.view)
             
             // render the view on the plane geometry as a material
-            self.show(hostingVC: arVC, on: node)
+            self.showHostingController(hostingVC: arVC, on: node)
         }
     }
     
-    func show<Content>(hostingVC: UIHostingController<Content>, on node: SCNNode) {
+    func showHostingController<Content>(hostingVC: UIHostingController<Content>, on node: SCNNode) {
         // create a new material
         let material = SCNMaterial()
         

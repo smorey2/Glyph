@@ -8,6 +8,7 @@
 
 import ARKit
 import Vision
+import Combine
 
 protocol BarcodeDetectorDelegate: class {
     func barcodeUpdated(with: Set<ARReferenceImage>)
@@ -16,6 +17,8 @@ protocol BarcodeDetectorDelegate: class {
 struct BarcodeResult {
     var version: Int
     let referenceImage: ARReferenceImage
+    let type: BarcodeType
+    let data: Any
 }
 
 // https://developer.apple.com/documentation/arkit/tracking_and_altering_images
@@ -49,6 +52,9 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
     // Version
     var version = 0
     
+    /// An object that detects new barcodes in the user's environment.
+    let barcodeLookup = BarcodeLookup()
+    
     // Run the Vision detector on the current image buffer.
     /// - Tag: DetectCurrentImage
     func detectCurrentImage() {
@@ -72,85 +78,92 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
             print("Unable to process barcode.\n\(error!.localizedDescription)")
             return
         }
-
+        
+        var changed = false
+        let group = DispatchGroup()
         for result in results {
-            let payload = result.payloadStringValue!
-    
-            // Continue if payload exists
-            if var foundBarcode = self.foundBarcodes[payload] {
+            let name = result.payloadStringValue!
+            
+            // Continue if name exists
+            if var foundBarcode = self.foundBarcodes[name] {
                 foundBarcode.version = version
-                self.foundBarcodes[payload] = foundBarcode
+                self.foundBarcodes[name] = foundBarcode
                 continue
             }
             
             // Extract image
             guard let image = extractImage(for: result) else {
-                print("Error: Could not extract image for \(payload).")
+                print("Error: Could not extract image for \(name).")
                 continue
             }
             
-            guard let referenceImage = createReferenceImage(image: image) else {
-                print("Error: Could not create reference image for \(payload).")
+            // Create reference image
+            guard let referenceImage = createReferenceImage(image: image, name: name) else {
+                print("Error: Could not create reference image for \(name).")
                 continue
             }
+            changed = true
             
-            self.foundBarcodes[payload] = BarcodeResult(version: version, referenceImage: referenceImage)
-            
+            group.enter()
+            let url = URL(string: "http://192.168.1.3/Glyph/image.json")!
+            self.barcodeLookup.lookup(with: url, completionHandler: { (type, data) in
+                self.foundBarcodes[name] = BarcodeResult(version: self.version,
+                                                         referenceImage: referenceImage,
+                                                         type: type,
+                                                         data: data)
+                group.leave()
+            })
+        }
+        group.wait()
+        if changed {
             let referenceImages = Set(self.foundBarcodes.values.map { $0.referenceImage })
-            
-            delegate?.barcodeUpdated(with: referenceImages)
+            self.delegate?.barcodeUpdated(with: referenceImages)
+            print("added \(referenceImages.count)")
         }
     }
     
-    func createReferenceImage(image: CIImage) -> ARReferenceImage? {
+    func createReferenceImage(image: CIImage, name: String) -> ARReferenceImage? {
         guard let referenceImagePixelBuffer = image.toPixelBuffer(pixelFormat: kCVPixelFormatType_32BGRA) else {
             print("Error: Could not convert image into an ARReferenceImage.")
             return nil
         }
         
-        /*
-         Set a default physical width of 50 centimeters for the new reference image.
-         While this estimate is likely incorrect, that's fine for the purpose of the
-         app. The content will still appear in the correct location and at the correct
-         scale relative to the image that's being tracked.
-         */
         let referenceImage = ARReferenceImage(referenceImagePixelBuffer, orientation: .up, physicalWidth: CGFloat(0.5))
-        
+        referenceImage.name = name
         referenceImage.validate { (error) in
             if let error = error {
                 print("Reference image validation failed: \(error.localizedDescription)")
                 return
             }
         }
-        
         return referenceImage
     }
     
     func extractImage(for result: VNBarcodeObservation) -> CIImage? {
         guard let currentBuffer = self.currentBuffer else { return nil }
-
+        
         let width = CGFloat(CVPixelBufferGetWidth(currentBuffer))
         let height = CGFloat(CVPixelBufferGetHeight(currentBuffer))
         let topLeft = CGPoint(x: result.topLeft.x * width, y: result.topLeft.y * height)
         let topRight = CGPoint(x: result.topRight.x * width, y: result.topRight.y * height)
         let bottomLeft = CGPoint(x: result.bottomLeft.x * width, y: result.bottomLeft.y * height)
         let bottomRight = CGPoint(x: result.bottomRight.x * width, y: result.bottomRight.y * height)
-
+        
         perspectiveTransform.setValue(CIVector(cgPoint: topLeft), forKey: "inputTopLeft")
         perspectiveTransform.setValue(CIVector(cgPoint: topRight), forKey: "inputTopRight")
         perspectiveTransform.setValue(CIVector(cgPoint: bottomLeft), forKey: "inputBottomLeft")
         perspectiveTransform.setValue(CIVector(cgPoint: bottomRight), forKey: "inputBottomRight")
-
+        
         let ciImage = CIImage(cvPixelBuffer: currentBuffer).oriented(.up)
         perspectiveTransform.setValue(ciImage, forKey: kCIInputImageKey)
-
+        
         guard let perspectiveImage: CIImage = perspectiveTransform.value(forKey: kCIOutputImageKey) as? CIImage else {
             print("Error: Rectangle detection failed - perspective correction filter has no output image.")
             return nil
         }
         return perspectiveImage
     }
-
+    
     // MARK: - ARSessionDelegate
     
     public func session(_ session: ARSession, didUpdate frame: ARFrame) {

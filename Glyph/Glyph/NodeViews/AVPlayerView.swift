@@ -1,5 +1,5 @@
 //
-//  AvPlayerView.swift
+//  AVPlayerView.swift
 //  Glyph
 //
 //  Created by Sky Morey on 8/22/20.

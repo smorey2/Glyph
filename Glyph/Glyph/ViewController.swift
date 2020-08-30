@@ -14,16 +14,14 @@ import SwiftUI
 // https://medium.com/better-programming/how-to-use-a-swiftui-view-in-anarkit-scenekit-app-d6504d7b92d2
 // https://github.com/CocoaHeadsDetroit/ARKit2DTracking/blob/master/CocoaHeadDemo/ViewController.swift
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
-//    @IBOutlet weak var messagePanel: UIView!
-//    @IBOutlet weak var messageLabel: UILabel!
     
     /// An object that detects new barcodes in the user's environment.
     let barcodeDetector = BarcodeDetector()
     
     /// An object that detects new barcodes in the user's environment.
-    let nodeFactory = NodeFactory()
+    let barcodeFactory = BarcodeFactory()
     
     // ChromeView
     var chromeStateModel = ChromeStateModel()
@@ -37,11 +35,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         barcodeDetector.delegate = self
-        nodeFactory.parent = self
+        barcodeFactory.parent = self
         sceneView.delegate = self
         sceneView.session.delegate = barcodeDetector
-        sceneView.showsStatistics = true
-        
+//        sceneView.showsStatistics = true
         chromeViewController.willMove(toParent: self)
         chromeViewController.view.backgroundColor = .clear
         updateChrome(size: view.frame.size)
@@ -63,8 +60,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateChrome), name: UIDevice.orientationDidChangeNotification, object: nil)
         
         // Prevent the screen from being dimmed after a while.
         UIApplication.shared.isIdleTimerDisabled = true
@@ -72,14 +67,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Restart the session and remove any image anchors that may have been detected previously.
         runImageTrackingSession(with: [], runOptions: [.removeExistingAnchors, .resetTracking])
         
+        // message
         chromeStateModel.title = "Look for a QR code."
-//        showMessage("Look for a rectangular image.", autoHide: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneView.session.pause()
-//        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     /// - Tag: ImageTrackingSession
@@ -91,38 +85,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.run(configuration, options: runOptions)
     }
     
-    // MARK: - Message
-    
-    // The timer for message presentation.
-//    var messageHideTimer: Timer?
-//
-//    func showMessage(_ message: String, autoHide: Bool = true) {
-//        DispatchQueue.main.async {
-//            self.messageLabel.text = message
-//            self.setMessageHidden(false)
-//
-//            self.messageHideTimer?.invalidate()
-//            if autoHide {
-//                self.messageHideTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
-//                    self?.setMessageHidden(true)
-//                }
-//            }
-//        }
-//    }
-//
-//    func setMessageHidden(_ hide: Bool) {
-//        DispatchQueue.main.async {
-//            UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState], animations: {
-//                self.messagePanel.alpha = hide ? 0 : 1
-//            })
-//        }
-//    }
-    
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let imageAnchor = anchor as? ARImageAnchor else { return nil }
-        return nodeFactory.create(for: imageAnchor)
+        return barcodeFactory.create(for: imageAnchor)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -142,8 +109,8 @@ extension ViewController: BarcodeDetectorDelegate {
     /// Called when the app recognized a new barcode in the user's envirnment.
     /// - Tag: UpdateReferenceImages
     func barcodeUpdated(with trackingImages: Set<ARReferenceImage>) {
+        // Start the session with the newly recognized image.
         DispatchQueue.main.async {
-            // Start the session with the newly recognized image.
             self.runImageTrackingSession(with: trackingImages)
         }
     }
