@@ -18,9 +18,8 @@ class BarcodeFactory {
     
     // MARK: - Factory
     
-    func create(for imageAnchor: ARImageAnchor) -> SCNNode? {
+    func create(for imageAnchor: ARImageAnchor, detector: BarcodeDetector) -> SCNNode? {
         let node = SCNNode()
-        node.opacity = 1
         
         // Create a plan that has the same real world height and width as our detected image
         let chrome:CGFloat = 0.03
@@ -33,8 +32,8 @@ class BarcodeFactory {
         node.addChildNode(planeNode)
         
         // factory
-        let type = BarcodeType.ui
-        self.factory(type: type, data: [], plane: plane, planeNode: planeNode)
+        let barcodeData = detector.findBarcodeData(for: imageAnchor.name)
+        self.factory(type: barcodeData.type, data: barcodeData.data, plane: plane, planeNode: planeNode)
         
         // return node
         return node
@@ -42,12 +41,12 @@ class BarcodeFactory {
     
     func factory(type: BarcodeType, data: Any, plane: SCNPlane, planeNode: SCNNode) {
         switch type {
-        case .image: createHostingController(for: planeNode, view: ImageView(info: ImageInfo()))
-        case .avplayer: createAVPlayer(for: plane, info: AVPlayerInfo())
+        case .none, .error, .unknown: planeNode.opacity = 0.8
+        case .image: createHostingController(for: planeNode, view: ImageView(info: data as! ImageInfo))
+        case .avplayer: createAVPlayer(for: plane, info: data as! AVPlayerInfo)
         case .ui: createHostingController(for: planeNode, view: SampleView())
         case .web: createHostingController(for: planeNode, view: WebContentView())
-        case .button: createHostingController(for: planeNode, view: ButtonView(info: ButtonInfo()))
-        default: print("type \(type)")
+        case .button: createHostingController(for: planeNode, view: ButtonView(info: data as! ButtonInfo))
         }
     }
     

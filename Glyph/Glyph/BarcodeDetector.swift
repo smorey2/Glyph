@@ -55,6 +55,14 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
     /// An object that detects new barcodes in the user's environment.
     let barcodeLookup = BarcodeLookup()
     
+    // find barcode data
+    public func findBarcodeData(for name: String?) -> (type: BarcodeType, data: Any) {
+        if let name = name, let foundBarcode = self.foundBarcodes[name] {
+            return (foundBarcode.type, foundBarcode.data)
+        }
+        return (.none, [])
+    }
+    
     // Run the Vision detector on the current image buffer.
     /// - Tag: DetectCurrentImage
     func detectCurrentImage() {
@@ -106,6 +114,13 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
             
             group.enter()
             let url = URL(string: "http://192.168.1.3/Glyph/image.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_3g2.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_3gp.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_avi.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mov.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mp4.json")!
+//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mpg.json")!
+            //let url = URL(string: "http://192.168.1.3/Glyph/button.json")!
             self.barcodeLookup.lookup(with: url, completionHandler: { (type, data) in
                 self.foundBarcodes[name] = BarcodeResult(version: self.version,
                                                          referenceImage: referenceImage,

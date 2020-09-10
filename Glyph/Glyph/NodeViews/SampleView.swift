@@ -40,5 +40,6 @@ struct SampleView: View {
 struct SampleView_Previews: PreviewProvider {
     static var previews: some View {
         SampleView()
+            .Dump()
     }
 }

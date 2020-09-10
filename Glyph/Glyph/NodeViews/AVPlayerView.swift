@@ -6,7 +6,3 @@
 //  Copyright © 2020 Sky Morey. All rights reserved.
 //
 
-struct AVPlayerInfo {
-    var url = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
-    var loop = false
-}

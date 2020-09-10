@@ -9,10 +9,6 @@
 import SwiftUI
 import Combine
 
-struct ImageInfo {
-    var url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-}
-
 class ImageLoader: ObservableObject {
     var didChange = PassthroughSubject<Data, Never>()
     var data = Data() {
@@ -21,7 +17,7 @@ class ImageLoader: ObservableObject {
         }
     }
     
-    init(urlString:String) {
+    init(urlString: String) {
         guard let url = URL(string: urlString) else { return }
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else { return }
@@ -34,10 +30,10 @@ class ImageLoader: ObservableObject {
 }
 
 struct ImageView: View {
-    @ObservedObject var imageLoader:ImageLoader
-    @State var image:UIImage = UIImage()
+    @ObservedObject var imageLoader: ImageLoader
+    @State var image: UIImage = UIImage()
     
-    init(info:ImageInfo) {
+    init(info: ImageInfo) {
         imageLoader = ImageLoader(urlString: info.url)
     }
     

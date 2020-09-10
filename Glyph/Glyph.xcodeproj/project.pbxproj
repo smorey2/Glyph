@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425E3A32503F9CC00407DA2 /* UIView.swift */; };
+		5425E3A62503FB1A00407DA2 /* SwiftUISerdes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */; };
 		546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */; };
 		546DA77A24F4070F0069BE1A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77924F4070F0069BE1A /* Extensions.swift */; };
 		546FBB3C24F47A3400F948D9 /* BarcodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */; };
@@ -17,6 +19,7 @@
 		546FBB4924FAD79B00F948D9 /* ChromeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4824FAD79B00F948D9 /* ChromeView.swift */; };
 		546FBB4B24FC00B300F948D9 /* BarcodeLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */; };
 		546FBB4D24FC038500F948D9 /* Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4C24FC038500F948D9 /* Unused.swift */; };
+		546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4E2503CD9F00F948D9 /* AppServices.swift */; };
 		54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A5FCC524F16E5600BACD9B /* AppDelegate.swift */; };
 		54A5FCC824F16E5600BACD9B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCC724F16E5600BACD9B /* art.scnassets */; };
 		54A5FCCD24F16E5600BACD9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCCB24F16E5600BACD9B /* Main.storyboard */; };
@@ -38,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5425E3A32503F9CC00407DA2 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUISerdes.swift; sourceTree = "<group>"; };
 		546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeDetector.swift; sourceTree = "<group>"; };
 		546DA77924F4070F0069BE1A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		546DA77D24F407930069BE1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +54,7 @@
 		546FBB4824FAD79B00F948D9 /* ChromeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeView.swift; sourceTree = "<group>"; };
 		546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeLookup.swift; sourceTree = "<group>"; };
 		546FBB4C24FC038500F948D9 /* Unused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unused.swift; sourceTree = "<group>"; };
+		546FBB4E2503CD9F00F948D9 /* AppServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
 		54A5FCC224F16E5600BACD9B /* Glyph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A5FCC524F16E5600BACD9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54A5FCC724F16E5600BACD9B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -96,10 +102,11 @@
 			isa = PBXGroup;
 			children = (
 				546FBB4424FABF4700F948D9 /* AVPlayerView.swift */,
-				546FBB3E24F4865D00F948D9 /* WebContentView.swift */,
-				546FBB3F24F4865D00F948D9 /* ImageView.swift */,
 				546FBB4024F4865D00F948D9 /* ButtonView.swift */,
+				546FBB3F24F4865D00F948D9 /* ImageView.swift */,
 				54B416CD24F176A0002A9F5C /* SampleView.swift */,
+				5425E3A32503F9CC00407DA2 /* UIView.swift */,
+				546FBB3E24F4865D00F948D9 /* WebContentView.swift */,
 			);
 			path = NodeViews;
 			sourceTree = "<group>";
@@ -127,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				54A5FCC524F16E5600BACD9B /* AppDelegate.swift */,
+				546FBB4E2503CD9F00F948D9 /* AppServices.swift */,
 				546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */,
 				546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */,
 				546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */,
@@ -135,6 +143,7 @@
 				546DA77D24F407930069BE1A /* Info.plist */,
 				546FBB3D24F485D300F948D9 /* NodeViews */,
 				546DA77824F405E90069BE1A /* Resources */,
+				5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */,
 				546FBB4C24FC038500F948D9 /* Unused.swift */,
 				54FB68A324F2BB3D00623352 /* ViewController.swift */,
 			);
@@ -263,14 +272,17 @@
 				546FBB4B24FC00B300F948D9 /* BarcodeLookup.swift in Sources */,
 				54FB68A424F2BB3D00623352 /* ViewController.swift in Sources */,
 				546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */,
+				546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */,
 				546FBB3C24F47A3400F948D9 /* BarcodeFactory.swift in Sources */,
 				54B416CE24F176A0002A9F5C /* SampleView.swift in Sources */,
 				546FBB4924FAD79B00F948D9 /* ChromeView.swift in Sources */,
 				546DA77A24F4070F0069BE1A /* Extensions.swift in Sources */,
 				546FBB4224F4865D00F948D9 /* ImageView.swift in Sources */,
 				546FBB4124F4865D00F948D9 /* WebContentView.swift in Sources */,
+				5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */,
 				546FBB4324F4865D00F948D9 /* ButtonView.swift in Sources */,
 				546FBB4D24FC038500F948D9 /* Unused.swift in Sources */,
+				5425E3A62503FB1A00407DA2 /* SwiftUISerdes.swift in Sources */,
 				546FBB4524FABF4700F948D9 /* AVPlayerView.swift in Sources */,
 				54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */,
 			);

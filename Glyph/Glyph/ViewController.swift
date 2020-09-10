@@ -89,7 +89,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let imageAnchor = anchor as? ARImageAnchor else { return nil }
-        return barcodeFactory.create(for: imageAnchor)
+        return barcodeFactory.create(for: imageAnchor, detector: barcodeDetector)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {

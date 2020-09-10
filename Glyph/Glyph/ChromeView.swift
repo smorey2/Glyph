@@ -15,6 +15,8 @@ class ChromeStateModel: ObservableObject {
 struct ChromeView: View {
     var model: ChromeStateModel
     
+    @State var flash = false
+    
     var body: some View {
         GeometryReader { geometry in
             HStack {
@@ -53,8 +55,12 @@ struct ChromeView: View {
                     }
                     .padding()
                     
-                    Button(action: { print("bolt") }) {
-                        Image(systemName: "bolt")
+                    Button(action: {
+                        self.flash.toggle()
+                        AppServices.toggleFlash()
+                        
+                    }) {
+                        Image(systemName: self.flash ? "bolt.fill" : "bolt")
                             .font(Font.system(.largeTitle))
                     }
                     .padding()
@@ -69,5 +75,6 @@ struct ChromeView: View {
 struct ChromeView_Previews: PreviewProvider {
     static var previews: some View {
         ChromeView(model: ChromeStateModel())
+            .Dump()
     }
 }

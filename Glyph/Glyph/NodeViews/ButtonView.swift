@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-struct ButtonInfo {
-}
-
 struct ButtonView: View {
-    init(info:ButtonInfo) {
+    let info: ButtonInfo
+    
+    init(info: ButtonInfo) {
+        self.info = info
     }
     
     var body: some View {
@@ -23,7 +23,7 @@ struct ButtonView: View {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color.white)
                 //.frame(width: 150, height: 50)
-                Text("Tap Me")
+                Text(self.info.text)
             }
         }
     }
