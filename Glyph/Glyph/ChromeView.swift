@@ -75,6 +75,5 @@ struct ChromeView: View {
 struct ChromeView_Previews: PreviewProvider {
     static var previews: some View {
         ChromeView(model: ChromeStateModel())
-            .Dump()
     }
 }

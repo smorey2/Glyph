@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425E3A32503F9CC00407DA2 /* UIView.swift */; };
-		5425E3A62503FB1A00407DA2 /* SwiftUISerdes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */; };
 		546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */; };
 		546DA77A24F4070F0069BE1A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77924F4070F0069BE1A /* Extensions.swift */; };
 		546FBB3C24F47A3400F948D9 /* BarcodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */; };
@@ -42,7 +41,6 @@
 
 /* Begin PBXFileReference section */
 		5425E3A32503F9CC00407DA2 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
-		5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUISerdes.swift; sourceTree = "<group>"; };
 		546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeDetector.swift; sourceTree = "<group>"; };
 		546DA77924F4070F0069BE1A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		546DA77D24F407930069BE1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				546DA77D24F407930069BE1A /* Info.plist */,
 				546FBB3D24F485D300F948D9 /* NodeViews */,
 				546DA77824F405E90069BE1A /* Resources */,
-				5425E3A52503FB1A00407DA2 /* SwiftUISerdes.swift */,
 				546FBB4C24FC038500F948D9 /* Unused.swift */,
 				54FB68A324F2BB3D00623352 /* ViewController.swift */,
 			);
@@ -212,7 +209,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Sky Morey";
 				TargetAttributes = {
 					54A5FCC124F16E5600BACD9B = {
@@ -282,7 +279,6 @@
 				5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */,
 				546FBB4324F4865D00F948D9 /* ButtonView.swift in Sources */,
 				546FBB4D24FC038500F948D9 /* Unused.swift in Sources */,
-				5425E3A62503FB1A00407DA2 /* SwiftUISerdes.swift in Sources */,
 				546FBB4524FABF4700F948D9 /* AVPlayerView.swift in Sources */,
 				54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */,
 			);
@@ -352,6 +348,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -413,6 +410,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
