@@ -6,7 +6,7 @@
 //  Copyright © 2020 Sky Morey. All rights reserved.
 //
 
-import Foundation
+import CoreGraphics
 
 public enum GlyphSelector {
     case fixed, normal, focus, active
@@ -18,8 +18,8 @@ public enum GlyphSelector {
         case .active: return ":active"
         }
     }
-    init(value: String) {
-        switch value.lowercased() {
+    public init(string s: String) {
+        switch s.lowercased() {
         case ":fixed": self = .fixed
         case ":normal": self = .normal
         case ":focus": self = .focus
@@ -27,10 +27,9 @@ public enum GlyphSelector {
         default: self = .normal
         }
     }
-    public init?(_ string: String) {
-        guard let endIdx = string.lastIndex(of: ":") else { self = .normal; return }
-        guard let selector = GlyphSelector(String(string[endIdx...])) else { return nil }
-        self = selector
+    fileprivate init?(parse s: String) {
+        guard let endIdx = s.lastIndex(of: ":") else { self = .normal; return }
+        self = GlyphSelector(string: String(s[endIdx...]))
     }
 }
 
@@ -46,8 +45,8 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             }
         }
         
-        public init(value: String) {
-            switch value.lowercased() {
+        public init(string s: String) {
+            switch s.lowercased() {
             case "l", "t": self = .left
             case "c": self = .center
             case "r", "b": self = .right
@@ -58,42 +57,42 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
     public struct Width: Equatable, CustomStringConvertible {
         public static let zero = Width(multiple: true, value: 1, anchor: .center, offset: 0)
         public let multiple: Bool
-        public let value: Double
+        public let value: CGFloat
         public let anchor: WidthAnchor
-        public let offset: Double
+        public let offset: CGFloat
         
         public var description: String {
             var b = [String]()
             if multiple { b.append("*") }
-            b.append(String(value))
+            b.append(value.cleanDescription)
             if anchor != .center || offset != 0  { b.append(anchor.description) }
-            if offset != 0 { b.append(String(offset))}
+            if offset != 0 { b.append(offset.cleanDescription)}
             return b.joined()
         }
         
-        public init(multiple: Bool, value: Double, anchor: WidthAnchor, offset: Double) {
+        public init(multiple: Bool, value: CGFloat, anchor: WidthAnchor, offset: CGFloat) {
             self.multiple = multiple
             self.value = value
             self.anchor = anchor
             self.offset = offset
         }
-        public init?(_ string: String) {
-            var idx = string.startIndex
-            let endIdx = string.lastIndex(of: ":") ?? string.endIndex
-            self.multiple = string.starts(with: "*")
-            if self.multiple { idx = string.index(after: idx) }
-            var nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-            var nextValue = string[idx..<(nextIdx ?? endIdx)]
+        public init?(string s: String) {
+            var idx = s.startIndex
+            let endIdx = s.lastIndex(of: ":") ?? s.endIndex
+            self.multiple = s.starts(with: "*")
+            if self.multiple { idx = s.index(after: idx) }
+            var nextIdx = s[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+            var nextValue = s[idx..<(nextIdx ?? endIdx)]
             guard let value = Double(nextValue) else { return nil }
-            self.value = value
+            self.value = CGFloat(value)
             if nextIdx != nil {
-                self.anchor = WidthAnchor(value: String(string[nextIdx!]))
-                idx = string.index(after: nextIdx!)
-                nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-                nextValue = string[idx..<(nextIdx ?? endIdx)]
+                self.anchor = WidthAnchor(string: String(s[nextIdx!]))
+                idx = s.index(after: nextIdx!)
+                nextIdx = s[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+                nextValue = s[idx..<(nextIdx ?? endIdx)]
                 if nextValue.count > 0 {
                     guard let offset = Double(nextValue) else { return nil }
-                    self.offset = offset
+                    self.offset = CGFloat(offset)
                 }
                 else { self.offset = 0 }
             }
@@ -115,8 +114,8 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             }
         }
         
-        public init(value: String) {
-            switch value.lowercased() {
+        public init(string s: String) {
+            switch s.lowercased() {
             case "t", "l": self = .top
             case "c": self = .center
             case "b", "r": self = .bottom
@@ -127,42 +126,42 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
     public struct Height: Equatable, CustomStringConvertible {
         public static let zero = Height(multiple: true, value: 1, anchor: .center, offset: 0)
         public let multiple: Bool
-        public let value: Double
+        public let value: CGFloat
         public let anchor: HeightAnchor
-        public let offset: Double
+        public let offset: CGFloat
         
         public var description: String {
             var b = [String]()
             if multiple { b.append("*") }
-            b.append(String(value))
+            b.append(value.cleanDescription)
             if anchor != .center || offset != 0  { b.append(anchor.description) }
-            if offset != 0 { b.append(String(offset))}
+            if offset != 0 { b.append(offset.cleanDescription)}
             return b.joined()
         }
         
-        public init(multiple: Bool, value: Double, anchor: HeightAnchor, offset: Double) {
+        public init(multiple: Bool, value: CGFloat, anchor: HeightAnchor, offset: CGFloat) {
             self.multiple = multiple
             self.value = value
             self.anchor = anchor
             self.offset = offset
         }
-        public init?(_ string: String) {
-            var idx = string.startIndex
-            let endIdx = string.lastIndex(of: ":") ?? string.endIndex
-            self.multiple = string.starts(with: "*")
-            if self.multiple { idx = string.index(after: idx) }
-            var nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-            var nextValue = string[idx..<(nextIdx ?? endIdx)]
+        public init?(string s: String) {
+            var idx = s.startIndex
+            let endIdx = s.lastIndex(of: ":") ?? s.endIndex
+            self.multiple = s.starts(with: "*")
+            if self.multiple { idx = s.index(after: idx) }
+            var nextIdx = s[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+            var nextValue = s[idx..<(nextIdx ?? endIdx)]
             guard let value = Double(nextValue) else { return nil }
-            self.value = value
+            self.value = CGFloat(value)
             if nextIdx != nil {
-                self.anchor = HeightAnchor(value: String(string[nextIdx!]))
-                idx = string.index(after: nextIdx!)
-                nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-                nextValue = string[idx..<(nextIdx ?? endIdx)]
+                self.anchor = HeightAnchor(string: String(s[nextIdx!]))
+                idx = s.index(after: nextIdx!)
+                nextIdx = s[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+                nextValue = s[idx..<(nextIdx ?? endIdx)]
                 if nextValue.count > 0 {
                     guard let offset = Double(nextValue) else { return nil }
-                    self.offset = offset
+                    self.offset = CGFloat(offset)
                 }
                 else { self.offset = 0 }
             }
@@ -180,6 +179,7 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
     public let height: Height
 
     public var description: String {
+        if self == Self.zero { return "~" }
         var b = [String]()
         b.append(width.description)
         b.append("x")
@@ -193,13 +193,13 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
         self.width = width
         self.height = height
     }
-    public init?(_ value: String) {
-        if value == "" || value == "~" {
+    public init?(string s: String) {
+        if s == "" || s == "~" {
             self = Self.zero
             return
         }
-        let lines = value.components(separatedBy: ["x", "X"])
-        guard let selector = GlyphSelector(lines.last!), let width = Width(lines.first!), let height = Height(lines.last!) else { return nil }
+        let lines = s.components(separatedBy: ["x", "X"])
+        guard let selector = GlyphSelector(parse: lines.last!), let width = Width(string: lines.first!), let height = Height(string: lines.last!) else { return nil }
         self.selector = selector
         self.width = width
         self.height = height
@@ -212,7 +212,7 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
     // MARK - Codable
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        self.init(try container.decode(String.self))!
+        self.init(string: try container.decode(String.self))!
     }
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()

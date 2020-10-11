@@ -17,7 +17,7 @@ protocol BarcodeDetectorDelegate: class {
 struct BarcodeResult {
     var version: Int
     let referenceImage: ARReferenceImage
-    let context: GlyphContext
+    let context: GlyphBarcode
 }
 
 // https://developer.apple.com/documentation/arkit/tracking_and_altering_images
@@ -55,9 +55,9 @@ class BarcodeDetector: NSObject {
     let glyphLookup = GlyphLookup()
     
     // find barcode data
-    public func findGlyphContext(for payload: String?) -> GlyphContext {
+    public func findGlyphContext(for payload: String?) -> GlyphBarcode {
         if let payload = payload, let foundBarcode = self.foundBarcodes[payload] { return foundBarcode.context }
-        return GlyphContext.empty
+        return GlyphBarcode.empty
     }
     
     // Run the Vision detector on the current image buffer.
@@ -110,21 +110,21 @@ class BarcodeDetector: NSObject {
             changed = true
             
             // GlyphContext and Load
-            let context = GlyphContext(payload, refresh: {})
-            guard let url = context.url else {
+            let barcode = GlyphBarcode(string: payload, refresh: {})
+            guard let url = barcode.url else {
                 foundBarcodes[payload] = BarcodeResult(
                     version: self.version,
                     referenceImage: referenceImage,
-                    context: context)
+                    context: barcode)
                 continue
             }
             group.enter()
             self.glyphLookup.lookup(with: url) { type, data in
-                context.lookup(type: type, data: data)
+                barcode.lookup(type: type, data: data)
                 self.foundBarcodes[payload] = BarcodeResult(
                     version: self.version,
                     referenceImage: referenceImage,
-                    context: context)
+                    context: barcode)
                 group.leave()
             }
         }

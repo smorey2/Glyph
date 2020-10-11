@@ -28,7 +28,7 @@ public struct BlueRequest {
         method = firstLine[firstLine.startIndex...spaceIndex].trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         uri = firstLine[spaceIndex...lastSpaceIndex].trimmingCharacters(in: .whitespacesAndNewlines)
         var headers = [String:String]()
-        for line in lines[lines.index(after: lines.startIndex)...] {
+        for line in lines[1...] {
             guard let separatorIndex = line.firstIndex(of: ":") else { fatalError() }
             let headerName = line[...separatorIndex].trimmingCharacters(in: .whitespacesAndNewlines)
             let headerValue = line[line.index(after: separatorIndex)...].trimmingCharacters(in: .whitespacesAndNewlines)

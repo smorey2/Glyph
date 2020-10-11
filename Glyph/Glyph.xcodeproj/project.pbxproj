@@ -25,7 +25,7 @@
 		546FBB4B24FC00B300F948D9 /* GlyphLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */; };
 		546FBB4D24FC038500F948D9 /* Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4C24FC038500F948D9 /* Unused.swift */; };
 		546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4E2503CD9F00F948D9 /* AppServices.swift */; };
-		549FFB57253275D500FD4BE2 /* GlyphContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */; };
+		549FFB57253275D500FD4BE2 /* GlyphBarcodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549FFB56253275D500FD4BE2 /* GlyphBarcodeTests.swift */; };
 		54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A5FCC524F16E5600BACD9B /* AppDelegate.swift */; };
 		54A5FCC824F16E5600BACD9B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCC724F16E5600BACD9B /* art.scnassets */; };
 		54A5FCCD24F16E5600BACD9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCCB24F16E5600BACD9B /* Main.storyboard */; };
@@ -36,7 +36,7 @@
 		54D8BFE3253239EC00659C52 /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFE2253239EC00659C52 /* Particle.swift */; };
 		54D8BFEC2532737100659C52 /* GlyphSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */; };
 		54D8BFF22532737700659C52 /* GlyphSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFF12532737700659C52 /* GlyphSize.swift */; };
-		54D8BFFC2532741400659C52 /* GlyphContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFFB2532741400659C52 /* GlyphContext.swift */; };
+		54D8BFFC2532741400659C52 /* GlyphBarcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFFB2532741400659C52 /* GlyphBarcode.swift */; };
 		54FB68A424F2BB3D00623352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FB68A324F2BB3D00623352 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -69,7 +69,7 @@
 		546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlyphLookup.swift; sourceTree = "<group>"; };
 		546FBB4C24FC038500F948D9 /* Unused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unused.swift; sourceTree = "<group>"; };
 		546FBB4E2503CD9F00F948D9 /* AppServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
-		549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphContextTests.swift; sourceTree = "<group>"; };
+		549FFB56253275D500FD4BE2 /* GlyphBarcodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphBarcodeTests.swift; sourceTree = "<group>"; };
 		54A5FCC224F16E5600BACD9B /* Glyph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A5FCC524F16E5600BACD9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54A5FCC724F16E5600BACD9B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		54D8BFE2253239EC00659C52 /* Particle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
 		54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSizeTests.swift; sourceTree = "<group>"; };
 		54D8BFF12532737700659C52 /* GlyphSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSize.swift; sourceTree = "<group>"; };
-		54D8BFFB2532741400659C52 /* GlyphContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphContext.swift; sourceTree = "<group>"; };
+		54D8BFFB2532741400659C52 /* GlyphBarcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphBarcode.swift; sourceTree = "<group>"; };
 		54FB68A324F2BB3D00623352 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,7 +162,7 @@
 				54C327F625321853006068FF /* Bluetooth */,
 				546FBB4824FAD79B00F948D9 /* ChromeView.swift */,
 				546DA77924F4070F0069BE1A /* Extensions.swift */,
-				54D8BFFB2532741400659C52 /* GlyphContext.swift */,
+				54D8BFFB2532741400659C52 /* GlyphBarcode.swift */,
 				546FBB3B24F47A3400F948D9 /* GlyphFactory.swift */,
 				546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */,
 				54D8BFF12532737700659C52 /* GlyphSize.swift */,
@@ -181,7 +181,7 @@
 		54A5FCDB24F16E5700BACD9B /* GlyphTests */ = {
 			isa = PBXGroup;
 			children = (
-				549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */,
+				549FFB56253275D500FD4BE2 /* GlyphBarcodeTests.swift */,
 				54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */,
 				54A5FCDC24F16E5700BACD9B /* GlyphTests.swift */,
 				54A5FCDE24F16E5700BACD9B /* Info.plist */,
@@ -326,7 +326,7 @@
 				54D8BFE3253239EC00659C52 /* Particle.swift in Sources */,
 				546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */,
 				546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */,
-				54D8BFFC2532741400659C52 /* GlyphContext.swift in Sources */,
+				54D8BFFC2532741400659C52 /* GlyphBarcode.swift in Sources */,
 				546FBB3C24F47A3400F948D9 /* GlyphFactory.swift in Sources */,
 				54B416CE24F176A0002A9F5C /* SampleView.swift in Sources */,
 				546FBB4924FAD79B00F948D9 /* ChromeView.swift in Sources */,
@@ -350,7 +350,7 @@
 			files = (
 				54D8BFEC2532737100659C52 /* GlyphSizeTests.swift in Sources */,
 				54A5FCDD24F16E5700BACD9B /* GlyphTests.swift in Sources */,
-				549FFB57253275D500FD4BE2 /* GlyphContextTests.swift in Sources */,
+				549FFB57253275D500FD4BE2 /* GlyphBarcodeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

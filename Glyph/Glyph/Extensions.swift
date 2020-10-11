@@ -9,6 +9,12 @@
 import Foundation
 import ARKit
 
+extension CGFloat {
+    var cleanDescription: String {
+        self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : self.description
+    }
+}
+
 extension CIImage {
     
     /// Returns a pixel buffer of the image's current contents.

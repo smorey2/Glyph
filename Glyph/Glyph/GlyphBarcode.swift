@@ -8,25 +8,34 @@
 
 import Foundation
 
-public class GlyphContext {
-    public static let empty: GlyphContext = GlyphContext("", refresh: { })
+public class GlyphBarcode {
+    public static let empty = GlyphBarcode()
     public let headers: [String:String]
     public var sizes: [GlyphSelector:GlyphSize]
-    public let body: String?
     public var url: URL?
     public let multi: Bool
+    public let body: String?
     public let refresh: () -> Void
     
-    public init(_ value: String, refresh: @escaping () -> Void) {
-        let lines = value.components(separatedBy: "\n")
+    fileprivate init() {
+        self.headers = [String:String]()
+        self.sizes = [GlyphSelector:GlyphSize]()
+        self.url = nil
+        self.multi = false
+        self.body = nil
+        self.refresh = {}
+    }
+    public init(string s: String, refresh: @escaping () -> Void) {
+        let lines = s.components(separatedBy: "\n")
         var headers = [String:String]()
         var sizes = [GlyphSelector:GlyphSize]()
         var body: String? = nil
         for idx in 0..<lines.count {
             let line = lines[idx].trimmingCharacters(in: .whitespacesAndNewlines)
             // break
-            if idx > 0, line == "" {
-                body = lines[lines.index(lines.startIndex, offsetBy: idx)...].joined(separator: "\n")
+            if line == "" {
+                if headers.count == 0 { continue }
+                body = lines[lines.index(after: idx)...].joined(separator: "\n")
                 break
             }
             // nonvalue
@@ -34,7 +43,7 @@ public class GlyphContext {
                 headers[line.lowercased()] = "1"
                 continue
             }
-            let headerName = line[...separatorIndex].trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            let headerName = line[..<separatorIndex].trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             // http:https:
             if headerName.starts(with: "http") {
                 headers["url"] = line
@@ -42,7 +51,7 @@ public class GlyphContext {
             }
             let headerValue = line[line.index(after: separatorIndex)...].trimmingCharacters(in: .whitespacesAndNewlines)
             // size:
-            if headerName == "size", let size = GlyphSize(headerValue) {
+            if headerName == "size", let size = GlyphSize(string: headerValue) {
                 sizes[size.selector] = size
                 continue
             }
@@ -50,11 +59,10 @@ public class GlyphContext {
         }
         self.headers = headers
         self.sizes = sizes
-        self.body = body
         self.url = URL(string: headers["url"] ?? "")
         self.multi = headers["multi"] != nil
+        self.body = body
         self.refresh = refresh
-        fake()
     }
 //
 //    public func add(key: String, value: String) {
