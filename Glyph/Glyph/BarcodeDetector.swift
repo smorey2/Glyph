@@ -17,12 +17,11 @@ protocol BarcodeDetectorDelegate: class {
 struct BarcodeResult {
     var version: Int
     let referenceImage: ARReferenceImage
-    let type: BarcodeType
-    let data: Any
+    let context: GlyphContext
 }
 
 // https://developer.apple.com/documentation/arkit/tracking_and_altering_images
-class BarcodeDetector: NSObject, ARSessionDelegate {
+class BarcodeDetector: NSObject {
     
     // Callback
     weak var delegate: BarcodeDetectorDelegate?
@@ -53,14 +52,12 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
     var version = 0
     
     /// An object that detects new barcodes in the user's environment.
-    let barcodeLookup = BarcodeLookup()
+    let glyphLookup = GlyphLookup()
     
     // find barcode data
-    public func findBarcodeData(for name: String?) -> (type: BarcodeType, data: Any) {
-        if let name = name, let foundBarcode = self.foundBarcodes[name] {
-            return (foundBarcode.type, foundBarcode.data)
-        }
-        return (.none, [])
+    public func findGlyphContext(for payload: String?) -> GlyphContext {
+        if let payload = payload, let foundBarcode = self.foundBarcodes[payload] { return foundBarcode.context }
+        return GlyphContext.empty
     }
     
     // Run the Vision detector on the current image buffer.
@@ -90,44 +87,46 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
         var changed = false
         let group = DispatchGroup()
         for result in results {
-            let name = result.payloadStringValue!
+            let payload = result.payloadStringValue!
             
             // Continue if name exists
-            if var foundBarcode = self.foundBarcodes[name] {
+            if var foundBarcode = self.foundBarcodes[payload] {
                 foundBarcode.version = version
-                self.foundBarcodes[name] = foundBarcode
+                self.foundBarcodes[payload] = foundBarcode
                 continue
             }
             
             // Extract image
             guard let image = extractImage(for: result) else {
-                print("Error: Could not extract image for \(name).")
+                print("Error: Could not extract image for \(payload).")
                 continue
             }
             
             // Create reference image
-            guard let referenceImage = createReferenceImage(image: image, name: name) else {
-                print("Error: Could not create reference image for \(name).")
+            guard let referenceImage = createReferenceImage(image: image, name: payload) else {
+                print("Error: Could not create reference image for \(payload).")
                 continue
             }
             changed = true
             
+            // GlyphContext and Load
+            let context = GlyphContext(payload)
+            guard let url = context.url else {
+                foundBarcodes[payload] = BarcodeResult(
+                    version: self.version,
+                    referenceImage: referenceImage,
+                    context: context)
+                continue
+            }
             group.enter()
-            let url = URL(string: "http://192.168.1.3/Glyph/image.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_3g2.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_3gp.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_avi.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mov.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mp4.json")!
-//            let url = URL(string: "http://192.168.1.3/Glyph/avplayer_mpg.json")!
-            //let url = URL(string: "http://192.168.1.3/Glyph/button.json")!
-            self.barcodeLookup.lookup(with: url, completionHandler: { (type, data) in
-                self.foundBarcodes[name] = BarcodeResult(version: self.version,
-                                                         referenceImage: referenceImage,
-                                                         type: type,
-                                                         data: data)
+            self.glyphLookup.lookup(with: url) { type, data in
+                context.lookup(type: type, data: data)
+                self.foundBarcodes[payload] = BarcodeResult(
+                    version: self.version,
+                    referenceImage: referenceImage,
+                    context: context)
                 group.leave()
-            })
+            }
         }
         group.wait()
         if changed {
@@ -178,9 +177,9 @@ class BarcodeDetector: NSObject, ARSessionDelegate {
         }
         return perspectiveImage
     }
-    
-    // MARK: - ARSessionDelegate
-    
+}
+
+extension BarcodeDetector: ARSessionDelegate {
     public func session(_ session: ARSession, didUpdate frame: ARFrame) {
         guard currentBuffer == nil, case .normal = frame.camera.trackingState else { return }
         self.currentBuffer = frame.capturedImage

@@ -10,10 +10,12 @@ import UIKit
 import SceneKit
 import ARKit
 import SwiftUI
+import CoreBluetooth
 
 // https://medium.com/better-programming/how-to-use-a-swiftui-view-in-anarkit-scenekit-app-d6504d7b92d2
 // https://github.com/CocoaHeadsDetroit/ARKit2DTracking/blob/master/CocoaHeadDemo/ViewController.swift
-class ViewController: UIViewController, ARSCNViewDelegate {
+// https://www.freecodecamp.org/news/ultimate-how-to-bluetooth-swift-with-hardware-in-20-minutes/
+class ViewController: UIViewController {
     
     @IBOutlet var sceneView: ARSCNView!
     
@@ -21,11 +23,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let barcodeDetector = BarcodeDetector()
     
     /// An object that detects new barcodes in the user's environment.
-    let barcodeFactory = BarcodeFactory()
+    let glyphFactory = GlyphFactory()
     
     // ChromeView
     var chromeStateModel = ChromeStateModel()
     var chromeViewController:UIHostingController<ChromeView>!
+    
+    // Bluetooth
+    var blueManager = BlueManager()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -35,13 +40,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         barcodeDetector.delegate = self
-        barcodeFactory.parent = self
+        glyphFactory.parent = self
         sceneView.delegate = self
         sceneView.session.delegate = barcodeDetector
-//        sceneView.showsStatistics = true
+        sceneView.showsStatistics = true
         chromeViewController.willMove(toParent: self)
         chromeViewController.view.backgroundColor = .clear
         updateChrome(size: view.frame.size)
+        //        blueManager.startup()
         self.addChild(chromeViewController)
         self.view.addSubview(chromeViewController.view)
     }
@@ -76,6 +82,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    /// Called when the app starts a new image tracking session.
     /// - Tag: ImageTrackingSession
     func runImageTrackingSession(with trackingImages: Set<ARReferenceImage>,
                                  runOptions: ARSession.RunOptions = [.removeExistingAnchors]) {
@@ -84,12 +91,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         configuration.maximumNumberOfTrackedImages = trackingImages.count
         sceneView.session.run(configuration, options: runOptions)
     }
-    
-    // MARK: - ARSCNViewDelegate
-    
+}
+
+extension ViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let imageAnchor = anchor as? ARImageAnchor else { return nil }
-        return barcodeFactory.create(for: imageAnchor, detector: barcodeDetector)
+        return glyphFactory.create(for: imageAnchor, detector: barcodeDetector)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -106,7 +113,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 }
 
 extension ViewController: BarcodeDetectorDelegate {
-    /// Called when the app recognized a new barcode in the user's envirnment.
+    /// Called when the app recognized a new barcode in the user's environment.
     /// - Tag: UpdateReferenceImages
     func barcodeUpdated(with trackingImages: Set<ARReferenceImage>) {
         // Start the session with the newly recognized image.

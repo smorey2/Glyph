@@ -8,6 +8,20 @@
 
 import SwiftUI
 
+struct ButtonInfo {
+    let text:String
+    
+    init() {
+        text = "Tap Me"
+    }
+    init(json: [String: Any]) throws {
+        guard let text = json["text"] as? String else {
+            throw GlyphLookupError.missing("text")
+        }
+        self.text = text
+    }
+}
+
 struct ButtonView: View {
     let info: ButtonInfo
     

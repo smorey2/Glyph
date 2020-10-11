@@ -8,6 +8,21 @@
 
 import SwiftUI
 
+struct UIInfo {
+    let body: Any
+    
+    init() {
+        body = VStack {
+            Text("NONE")
+        }
+    }
+    init(json: [String: Any]) throws {
+        body = VStack {
+            Text("NONE")
+        }
+    }
+}
+
 struct UIView: View {
     let info: UIInfo
     

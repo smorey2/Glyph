@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5425E3A32503F9CC00407DA2 /* UIView.swift */; };
+		5434EAF2253220A200B08203 /* BlueServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C327F725321870006068FF /* BlueServer.swift */; };
+		5434EAF925322F2700B08203 /* BlueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5434EAF825322F2700B08203 /* BlueManager.swift */; };
 		54610C90252F42F700907848 /* UIView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54610C8F252F42F700907848 /* UIView2.swift */; };
 		54610D49252F453100907848 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54610D48252F453100907848 /* KeyboardView.swift */; };
 		54610D4F252F459800907848 /* KeyboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54610D4E252F459800907848 /* KeyboardToolBar.swift */; };
+		54610D5B2532162400907848 /* AdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54610D5A2532162400907848 /* AdjustView.swift */; };
 		546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */; };
 		546DA77A24F4070F0069BE1A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546DA77924F4070F0069BE1A /* Extensions.swift */; };
-		546FBB3C24F47A3400F948D9 /* BarcodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */; };
+		546FBB3C24F47A3400F948D9 /* GlyphFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3B24F47A3400F948D9 /* GlyphFactory.swift */; };
 		546FBB4124F4865D00F948D9 /* WebContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3E24F4865D00F948D9 /* WebContentView.swift */; };
 		546FBB4224F4865D00F948D9 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB3F24F4865D00F948D9 /* ImageView.swift */; };
 		546FBB4324F4865D00F948D9 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4024F4865D00F948D9 /* ButtonView.swift */; };
 		546FBB4524FABF4700F948D9 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4424FABF4700F948D9 /* AVPlayerView.swift */; };
 		546FBB4924FAD79B00F948D9 /* ChromeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4824FAD79B00F948D9 /* ChromeView.swift */; };
-		546FBB4B24FC00B300F948D9 /* BarcodeLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */; };
+		546FBB4B24FC00B300F948D9 /* GlyphLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */; };
 		546FBB4D24FC038500F948D9 /* Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4C24FC038500F948D9 /* Unused.swift */; };
 		546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBB4E2503CD9F00F948D9 /* AppServices.swift */; };
+		549FFB57253275D500FD4BE2 /* GlyphContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */; };
 		54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A5FCC524F16E5600BACD9B /* AppDelegate.swift */; };
 		54A5FCC824F16E5600BACD9B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCC724F16E5600BACD9B /* art.scnassets */; };
 		54A5FCCD24F16E5600BACD9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCCB24F16E5600BACD9B /* Main.storyboard */; };
@@ -29,6 +33,10 @@
 		54A5FCD224F16E5700BACD9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54A5FCD024F16E5700BACD9B /* LaunchScreen.storyboard */; };
 		54A5FCDD24F16E5700BACD9B /* GlyphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A5FCDC24F16E5700BACD9B /* GlyphTests.swift */; };
 		54B416CE24F176A0002A9F5C /* SampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B416CD24F176A0002A9F5C /* SampleView.swift */; };
+		54D8BFE3253239EC00659C52 /* Particle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFE2253239EC00659C52 /* Particle.swift */; };
+		54D8BFEC2532737100659C52 /* GlyphSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */; };
+		54D8BFF22532737700659C52 /* GlyphSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFF12532737700659C52 /* GlyphSize.swift */; };
+		54D8BFFC2532741400659C52 /* GlyphContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D8BFFB2532741400659C52 /* GlyphContext.swift */; };
 		54FB68A424F2BB3D00623352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FB68A324F2BB3D00623352 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,21 +52,24 @@
 
 /* Begin PBXFileReference section */
 		5425E3A32503F9CC00407DA2 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		5434EAF825322F2700B08203 /* BlueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueManager.swift; sourceTree = "<group>"; };
 		54610C8F252F42F700907848 /* UIView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView2.swift; sourceTree = "<group>"; };
 		54610D48252F453100907848 /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		54610D4E252F459800907848 /* KeyboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolBar.swift; sourceTree = "<group>"; };
+		54610D5A2532162400907848 /* AdjustView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustView.swift; sourceTree = "<group>"; };
 		546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeDetector.swift; sourceTree = "<group>"; };
 		546DA77924F4070F0069BE1A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		546DA77D24F407930069BE1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeFactory.swift; sourceTree = "<group>"; };
+		546FBB3B24F47A3400F948D9 /* GlyphFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphFactory.swift; sourceTree = "<group>"; };
 		546FBB3E24F4865D00F948D9 /* WebContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebContentView.swift; sourceTree = "<group>"; };
 		546FBB3F24F4865D00F948D9 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		546FBB4024F4865D00F948D9 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		546FBB4424FABF4700F948D9 /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
 		546FBB4824FAD79B00F948D9 /* ChromeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeView.swift; sourceTree = "<group>"; };
-		546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeLookup.swift; sourceTree = "<group>"; };
+		546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlyphLookup.swift; sourceTree = "<group>"; };
 		546FBB4C24FC038500F948D9 /* Unused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unused.swift; sourceTree = "<group>"; };
 		546FBB4E2503CD9F00F948D9 /* AppServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
+		549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphContextTests.swift; sourceTree = "<group>"; };
 		54A5FCC224F16E5600BACD9B /* Glyph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54A5FCC524F16E5600BACD9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54A5FCC724F16E5600BACD9B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -70,6 +81,12 @@
 		54A5FCDE24F16E5700BACD9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54B416CD24F176A0002A9F5C /* SampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleView.swift; sourceTree = "<group>"; };
 		54B416D024F177B9002A9F5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		54C327F5253217DA006068FF /* T01a_FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T01a_FormView.swift; sourceTree = "<group>"; };
+		54C327F725321870006068FF /* BlueServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueServer.swift; sourceTree = "<group>"; };
+		54D8BFE2253239EC00659C52 /* Particle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Particle.swift; sourceTree = "<group>"; };
+		54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSizeTests.swift; sourceTree = "<group>"; };
+		54D8BFF12532737700659C52 /* GlyphSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphSize.swift; sourceTree = "<group>"; };
+		54D8BFFB2532741400659C52 /* GlyphContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphContext.swift; sourceTree = "<group>"; };
 		54FB68A324F2BB3D00623352 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,18 +155,23 @@
 		54A5FCC424F16E5600BACD9B /* Glyph */ = {
 			isa = PBXGroup;
 			children = (
+				54610D5A2532162400907848 /* AdjustView.swift */,
 				54A5FCC524F16E5600BACD9B /* AppDelegate.swift */,
 				546FBB4E2503CD9F00F948D9 /* AppServices.swift */,
 				546DA77624F33C5F0069BE1A /* BarcodeDetector.swift */,
-				546FBB3B24F47A3400F948D9 /* BarcodeFactory.swift */,
-				546FBB4A24FC00B300F948D9 /* BarcodeLookup.swift */,
+				54C327F625321853006068FF /* Bluetooth */,
 				546FBB4824FAD79B00F948D9 /* ChromeView.swift */,
-				54610D48252F453100907848 /* KeyboardView.swift */,
-				54610D4E252F459800907848 /* KeyboardToolBar.swift */,
 				546DA77924F4070F0069BE1A /* Extensions.swift */,
+				54D8BFFB2532741400659C52 /* GlyphContext.swift */,
+				546FBB3B24F47A3400F948D9 /* GlyphFactory.swift */,
+				546FBB4A24FC00B300F948D9 /* GlyphLookup.swift */,
+				54D8BFF12532737700659C52 /* GlyphSize.swift */,
 				546DA77D24F407930069BE1A /* Info.plist */,
+				54610D4E252F459800907848 /* KeyboardToolBar.swift */,
+				54610D48252F453100907848 /* KeyboardView.swift */,
 				546FBB3D24F485D300F948D9 /* NodeViews */,
 				546DA77824F405E90069BE1A /* Resources */,
+				54C327F4253217CB006068FF /* TestViews */,
 				546FBB4C24FC038500F948D9 /* Unused.swift */,
 				54FB68A324F2BB3D00623352 /* ViewController.swift */,
 			);
@@ -159,6 +181,8 @@
 		54A5FCDB24F16E5700BACD9B /* GlyphTests */ = {
 			isa = PBXGroup;
 			children = (
+				549FFB56253275D500FD4BE2 /* GlyphContextTests.swift */,
+				54D8BFEB2532737100659C52 /* GlyphSizeTests.swift */,
 				54A5FCDC24F16E5700BACD9B /* GlyphTests.swift */,
 				54A5FCDE24F16E5700BACD9B /* Info.plist */,
 			);
@@ -171,6 +195,24 @@
 				54B416D024F177B9002A9F5C /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		54C327F4253217CB006068FF /* TestViews */ = {
+			isa = PBXGroup;
+			children = (
+				54C327F5253217DA006068FF /* T01a_FormView.swift */,
+			);
+			path = TestViews;
+			sourceTree = "<group>";
+		};
+		54C327F625321853006068FF /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				5434EAF825322F2700B08203 /* BlueManager.swift */,
+				54D8BFE2253239EC00659C52 /* Particle.swift */,
+				54C327F725321870006068FF /* BlueServer.swift */,
+			);
+			path = Bluetooth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,12 +317,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54D8BFF22532737700659C52 /* GlyphSize.swift in Sources */,
+				54610D5B2532162400907848 /* AdjustView.swift in Sources */,
 				54610C90252F42F700907848 /* UIView2.swift in Sources */,
-				546FBB4B24FC00B300F948D9 /* BarcodeLookup.swift in Sources */,
+				5434EAF2253220A200B08203 /* BlueServer.swift in Sources */,
+				546FBB4B24FC00B300F948D9 /* GlyphLookup.swift in Sources */,
 				54FB68A424F2BB3D00623352 /* ViewController.swift in Sources */,
+				54D8BFE3253239EC00659C52 /* Particle.swift in Sources */,
 				546DA77724F33C5F0069BE1A /* BarcodeDetector.swift in Sources */,
 				546FBB4F2503CD9F00F948D9 /* AppServices.swift in Sources */,
-				546FBB3C24F47A3400F948D9 /* BarcodeFactory.swift in Sources */,
+				54D8BFFC2532741400659C52 /* GlyphContext.swift in Sources */,
+				546FBB3C24F47A3400F948D9 /* GlyphFactory.swift in Sources */,
 				54B416CE24F176A0002A9F5C /* SampleView.swift in Sources */,
 				546FBB4924FAD79B00F948D9 /* ChromeView.swift in Sources */,
 				54610D4F252F459800907848 /* KeyboardToolBar.swift in Sources */,
@@ -291,6 +338,7 @@
 				5425E3A42503F9CC00407DA2 /* UIView.swift in Sources */,
 				546FBB4324F4865D00F948D9 /* ButtonView.swift in Sources */,
 				546FBB4D24FC038500F948D9 /* Unused.swift in Sources */,
+				5434EAF925322F2700B08203 /* BlueManager.swift in Sources */,
 				546FBB4524FABF4700F948D9 /* AVPlayerView.swift in Sources */,
 				54A5FCC624F16E5600BACD9B /* AppDelegate.swift in Sources */,
 			);
@@ -300,7 +348,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54D8BFEC2532737100659C52 /* GlyphSizeTests.swift in Sources */,
 				54A5FCDD24F16E5700BACD9B /* GlyphTests.swift in Sources */,
+				549FFB57253275D500FD4BE2 /* GlyphContextTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,7 +546,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DM9BJ949Y5;
 				INFOPLIST_FILE = GlyphTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -518,7 +568,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DM9BJ949Y5;
 				INFOPLIST_FILE = GlyphTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

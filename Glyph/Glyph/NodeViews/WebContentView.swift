@@ -9,6 +9,20 @@
 import SwiftUI
 import WebKit
 
+struct WebInfo {
+    let url:String
+    
+    init() {
+        url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+    }
+    init(json: [String: Any]) throws {
+        guard let url = json["url"] as? String else {
+            throw GlyphLookupError.missing("url")
+        }
+        self.url = url
+    }
+}
+
 struct WebContentView: View {
     @ObservedObject var webViewStateModel: WebViewStateModel = WebViewStateModel()
     var body: some View {

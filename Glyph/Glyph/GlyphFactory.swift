@@ -1,5 +1,5 @@
 //
-//  BarcodeFactory.swift
+//  GlpyhFactory.swift
 //  Glyph
 //
 //  Created by Sky Morey on 8/24/20.
@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 import SwiftUI
 
-class BarcodeFactory {
+class GlyphFactory {
     
     // Parent
     public weak var parent: UIViewController?
@@ -32,14 +32,14 @@ class BarcodeFactory {
         node.addChildNode(planeNode)
         
         // factory
-        let barcodeData = detector.findBarcodeData(for: imageAnchor.name)
+        let barcodeData = detector.findGlyphContext(for: imageAnchor.name)
         self.factory(type: barcodeData.type, data: barcodeData.data, plane: plane, planeNode: planeNode)
         
         // return node
         return node
     }
     
-    func factory(type: BarcodeType, data: Any, plane: SCNPlane, planeNode: SCNNode) {
+    func factory(type: GlyphType, data: Any, plane: SCNPlane, planeNode: SCNNode) {
         switch type {
         case .none, .error, .unknown: planeNode.opacity = 0.8
         case .image: createHostingController(for: planeNode, view: ImageView(info: data as! ImageInfo))
