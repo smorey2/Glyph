@@ -19,6 +19,7 @@ class GlyphFactory {
     // MARK: - Factory
     
     func create(for imageAnchor: ARImageAnchor, detector: BarcodeDetector) -> SCNNode? {
+        let context = detector.findGlyphContext(for: imageAnchor.name)
         let node = SCNNode()
         
         // Create a plan that has the same real world height and width as our detected image
@@ -32,8 +33,8 @@ class GlyphFactory {
         node.addChildNode(planeNode)
         
         // factory
-        let barcodeData = detector.findGlyphContext(for: imageAnchor.name)
-        self.factory(type: barcodeData.type, data: barcodeData.data, plane: plane, planeNode: planeNode)
+   
+        self.factory(type: context.type, data: context.data, plane: plane, planeNode: planeNode)
         
         // return node
         return node

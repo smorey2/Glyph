@@ -9,17 +9,18 @@
 import Foundation
 
 public class GlyphContext {
-    public static let empty: GlyphContext = GlyphContext("")
+    public static let empty: GlyphContext = GlyphContext("", refresh: { })
     public let headers: [String:String]
-    public var sizes: [GlyphSize]
+    public var sizes: [GlyphSelector:GlyphSize]
     public let body: String?
     public var url: URL?
     public let multi: Bool
+    public let refresh: () -> Void
     
-    public init(_ value: String) {
+    public init(_ value: String, refresh: @escaping () -> Void) {
         let lines = value.components(separatedBy: "\n")
         var headers = [String:String]()
-        var sizes = [GlyphSize]()
+        var sizes = [GlyphSelector:GlyphSize]()
         var body: String? = nil
         for idx in 0..<lines.count {
             let line = lines[idx].trimmingCharacters(in: .whitespacesAndNewlines)
@@ -42,7 +43,7 @@ public class GlyphContext {
             let headerValue = line[line.index(after: separatorIndex)...].trimmingCharacters(in: .whitespacesAndNewlines)
             // size:
             if headerName == "size", let size = GlyphSize(headerValue) {
-                sizes.append(size)
+                sizes[size.selector] = size
                 continue
             }
             headers[headerName] = headerValue
@@ -52,12 +53,13 @@ public class GlyphContext {
         self.body = body
         self.url = URL(string: headers["url"] ?? "")
         self.multi = headers["multi"] != nil
+        self.refresh = refresh
         fake()
     }
-    
-    public func add(key: String, value: String) {
-        
-    }
+//
+//    public func add(key: String, value: String) {
+//
+//    }
     
     public func fake() {
         self.url = URL(string: "http://192.168.1.3/Glyph/image.json")

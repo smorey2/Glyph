@@ -8,29 +8,36 @@
 
 import Foundation
 
-public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
-    public enum Selector {
-        case fixed, normal, focus, active
-        public var description: String {
-            switch self {
-            case .fixed: return ":fixed"
-            case .normal: return ":normal"
-            case .focus: return ":focus"
-            case .active: return ":active"
-            }
-        }
-        init(value: String) {
-            switch value.lowercased() {
-            case ":fixed": self = .fixed
-            case ":normal": self = .normal
-            case ":focus": self = .focus
-            case ":active": self = .active
-            default: self = .normal
-            }
+public enum GlyphSelector {
+    case fixed, normal, focus, active
+    public var description: String {
+        switch self {
+        case .fixed: return ":fixed"
+        case .normal: return ":normal"
+        case .focus: return ":focus"
+        case .active: return ":active"
         }
     }
+    init(value: String) {
+        switch value.lowercased() {
+        case ":fixed": self = .fixed
+        case ":normal": self = .normal
+        case ":focus": self = .focus
+        case ":active": self = .active
+        default: self = .normal
+        }
+    }
+    public init?(_ string: String) {
+        guard let endIdx = string.lastIndex(of: ":") else { self = .normal; return }
+        guard let selector = GlyphSelector(String(string[endIdx...])) else { return nil }
+        self = selector
+    }
+}
+
+public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
     public enum WidthAnchor: CustomStringConvertible {
         case left, center, right
+        
         public var description: String {
             switch self {
             case .left: return "l"
@@ -38,6 +45,7 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             case .right: return "r"
             }
         }
+        
         public init(value: String) {
             switch value.lowercased() {
             case "l", "t": self = .left
@@ -47,8 +55,58 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             }
         }
     }
+    public struct Width: Equatable, CustomStringConvertible {
+        public static let zero = Width(multiple: true, value: 1, anchor: .center, offset: 0)
+        public let multiple: Bool
+        public let value: Double
+        public let anchor: WidthAnchor
+        public let offset: Double
+        
+        public var description: String {
+            var b = [String]()
+            if multiple { b.append("*") }
+            b.append(String(value))
+            if anchor != .center || offset != 0  { b.append(anchor.description) }
+            if offset != 0 { b.append(String(offset))}
+            return b.joined()
+        }
+        
+        public init(multiple: Bool, value: Double, anchor: WidthAnchor, offset: Double) {
+            self.multiple = multiple
+            self.value = value
+            self.anchor = anchor
+            self.offset = offset
+        }
+        public init?(_ string: String) {
+            var idx = string.startIndex
+            let endIdx = string.lastIndex(of: ":") ?? string.endIndex
+            self.multiple = string.starts(with: "*")
+            if self.multiple { idx = string.index(after: idx) }
+            var nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+            var nextValue = string[idx..<(nextIdx ?? endIdx)]
+            guard let value = Double(nextValue) else { return nil }
+            self.value = value
+            if nextIdx != nil {
+                self.anchor = WidthAnchor(value: String(string[nextIdx!]))
+                idx = string.index(after: nextIdx!)
+                nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+                nextValue = string[idx..<(nextIdx ?? endIdx)]
+                if nextValue.count > 0 {
+                    guard let offset = Double(nextValue) else { return nil }
+                    self.offset = offset
+                }
+                else { self.offset = 0 }
+            }
+            else { self.anchor = .center; self.offset = 0 }
+        }
+        
+        public static func == (a: Width, b: Width) -> Bool {
+            a.multiple == b.multiple && a.value == b.value && a.anchor == b.anchor && a.offset == b.offset
+        }
+    }
     public enum HeightAnchor: CustomStringConvertible {
         case top, center, bottom
+        
         public var description: String {
             switch self {
             case .top: return "t"
@@ -56,6 +114,7 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             case .bottom: return "b"
             }
         }
+        
         public init(value: String) {
             switch value.lowercased() {
             case "t", "l": self = .top
@@ -65,124 +124,89 @@ public struct GlyphSize: Equatable, CustomStringConvertible, Codable {
             }
         }
     }
+    public struct Height: Equatable, CustomStringConvertible {
+        public static let zero = Height(multiple: true, value: 1, anchor: .center, offset: 0)
+        public let multiple: Bool
+        public let value: Double
+        public let anchor: HeightAnchor
+        public let offset: Double
+        
+        public var description: String {
+            var b = [String]()
+            if multiple { b.append("*") }
+            b.append(String(value))
+            if anchor != .center || offset != 0  { b.append(anchor.description) }
+            if offset != 0 { b.append(String(offset))}
+            return b.joined()
+        }
+        
+        public init(multiple: Bool, value: Double, anchor: HeightAnchor, offset: Double) {
+            self.multiple = multiple
+            self.value = value
+            self.anchor = anchor
+            self.offset = offset
+        }
+        public init?(_ string: String) {
+            var idx = string.startIndex
+            let endIdx = string.lastIndex(of: ":") ?? string.endIndex
+            self.multiple = string.starts(with: "*")
+            if self.multiple { idx = string.index(after: idx) }
+            var nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+            var nextValue = string[idx..<(nextIdx ?? endIdx)]
+            guard let value = Double(nextValue) else { return nil }
+            self.value = value
+            if nextIdx != nil {
+                self.anchor = HeightAnchor(value: String(string[nextIdx!]))
+                idx = string.index(after: nextIdx!)
+                nextIdx = string[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
+                nextValue = string[idx..<(nextIdx ?? endIdx)]
+                if nextValue.count > 0 {
+                    guard let offset = Double(nextValue) else { return nil }
+                    self.offset = offset
+                }
+                else { self.offset = 0 }
+            }
+            else { self.anchor = .center; self.offset = 0 }
+        }
+        
+        public static func == (a: Height, b: Height) -> Bool {
+            a.multiple == b.multiple && a.value == b.value && a.anchor == b.anchor && a.offset == b.offset
+        }
+    }
     
-    public static let empty: GlyphSize = GlyphSize("")!
-    public let selector: Selector
-    public let widthMultiple: Bool
-    public let width: Double
-    public let widthAnchor: WidthAnchor
-    public let widthOffset: Double
-    public let heightMultiple: Bool
-    public let height: Double
-    public let heightAnchor: HeightAnchor
-    public let heightOffset: Double
-    
+    public static let zero: GlyphSize = GlyphSize(selector: .normal, width: Width.zero, height: Height.zero)
+    public let selector: GlyphSelector
+    public let width: Width
+    public let height: Height
+
     public var description: String {
         var b = [String]()
-        if widthMultiple { b.append("*") }
-        b.append(String(width))
-        if widthAnchor != .center || widthOffset != 0  { b.append(widthAnchor.description) }
-        if widthOffset != 0 { b.append(String(widthOffset))}
+        b.append(width.description)
         b.append("x")
-        if heightMultiple { b.append("*") }
-        b.append(String(height))
-        if heightAnchor != .center || heightOffset != 0  { b.append(heightAnchor.description) }
-        if heightOffset != 0 { b.append(String(heightOffset))}
+        b.append(height.description)
         if selector != .normal { b.append(selector.description)}
         return b.joined()
     }
     
-    public init?(_ value: String) {
-        if value == "" {
-            selector = .normal
-            widthMultiple = true
-            width = 1
-            widthAnchor = .center
-            widthOffset = 0
-            heightMultiple = true
-            height = 1
-            heightAnchor = .center
-            heightOffset = 0
-            return
-        }
-        else if value == "~" {
-            self = Self.empty
-            return
-        }
-        
-        // lines
-        let lines = value.components(separatedBy: ["x", "X"])
-        let wvalue = lines[0], hvalue = lines[lines.count > 1 ? 1 : 0]
-        var idx: String.Index, endIdx: String.Index, nextIdx: String.Index?, nextValue: Substring
-        
-        // selector
-        self.selector = .normal
-        
-        // width
-        idx = wvalue.startIndex
-        endIdx = wvalue.endIndex
-        self.widthMultiple = wvalue.starts(with: "*")
-        if self.widthMultiple { idx = wvalue.index(after: idx) }
-        nextIdx = wvalue[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-        nextValue = wvalue[idx..<(nextIdx ?? endIdx)]
-        guard let width = Double(nextValue) else { return nil }
+    public init(selector: GlyphSelector, width: Width, height: Height) {
+        self.selector = selector
         self.width = width
-        if nextIdx != nil {
-            self.widthAnchor = WidthAnchor(value: String(wvalue[nextIdx!]))
-            idx = wvalue.index(after: nextIdx!)
-            nextIdx = wvalue[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-            nextValue = wvalue[idx..<(nextIdx ?? endIdx)]
-            if nextValue.count > 0 {
-                guard let widthOffset = Double(nextValue) else { return nil }
-                self.widthOffset = widthOffset
-            }
-            else {
-                self.widthOffset = 0
-            }
-        }
-        else {
-            self.widthAnchor = .center
-            self.widthOffset = 0
-        }
-        
-        // height
-        idx = hvalue.startIndex
-        endIdx = hvalue.endIndex
-        self.heightMultiple = hvalue.starts(with: "*")
-        if self.heightMultiple { idx = hvalue.index(after: idx) }
-        nextIdx = hvalue[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-        nextValue = hvalue[idx..<(nextIdx ?? endIdx)]
-        guard let height = Double(nextValue) else { return nil }
         self.height = height
-        if nextIdx != nil {
-            self.heightAnchor = HeightAnchor(value: String(hvalue[nextIdx!]))
-            idx = wvalue.index(after: nextIdx!)
-            nextIdx = hvalue[idx..<endIdx].firstIndex { $0 < "+" || $0 > "9" }
-            nextValue = hvalue[idx..<(nextIdx ?? endIdx)]
-            if nextValue.count > 0 {
-                guard let heightOffset = Double(nextValue) else { return nil }
-                self.heightOffset = heightOffset
-            }
-            else {
-                self.heightOffset = 0
-            }
+    }
+    public init?(_ value: String) {
+        if value == "" || value == "~" {
+            self = Self.zero
+            return
         }
-        else {
-            self.heightAnchor = .center
-            self.heightOffset = 0
-        }
+        let lines = value.components(separatedBy: ["x", "X"])
+        guard let selector = GlyphSelector(lines.last!), let width = Width(lines.first!), let height = Height(lines.last!) else { return nil }
+        self.selector = selector
+        self.width = width
+        self.height = height
     }
     
     public static func == (a: GlyphSize, b: GlyphSize) -> Bool {
-        a.selector == b.selector &&
-            a.widthMultiple == b.widthMultiple &&
-            a.width == b.width &&
-            a.widthAnchor == b.widthAnchor &&
-            a.widthOffset == b.widthOffset &&
-            a.heightMultiple == b.heightMultiple &&
-            a.height == b.height &&
-            a.heightAnchor == b.heightAnchor &&
-            a.heightOffset == b.heightOffset
+        a.selector == b.selector && a.width == b.width && a.height == b.height
     }
     
     // MARK - Codable

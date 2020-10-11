@@ -9,37 +9,35 @@
 import XCTest
 @testable import Glyph
 
+typealias Width = GlyphSize.Width
+typealias Height = GlyphSize.Height
+
 class GlyphSizeTests: XCTestCase {
     var initValues:[String:(
-        widthMultiple:Bool, width:Double, widthAnchor:GlyphSize.WidthAnchor, widthOffset:Double,
-        heightMultiple:Bool, height:Double, heightAnchor:GlyphSize.HeightAnchor, heightOffset:Double)] = [
-            "~":            (true, 1, .center, 0, true, 1, .center, 0),
-            "1":            (false, 1, .center, 0, false, 1, .center, 0),
-//            "1:blur":       (false, 1, .center, 0, false, 1, .center, 0),
-            "1c1":          (false, 1, .center, 1, false, 1, .center, 1),
-            "*1r":          (true, 1, .right, 0, true, 1, .bottom, 0),
-            "1x2":          (false, 1, .center, 0, false, 2, .center, 0),
-            "1l1x2c2":      (false, 1, .left, 1, false, 2, .center, 2),
-            "1c-1x2":       (false, 1, .center, -1, false, 2, .center, 0),
-            "*1r+1x2":      (true, 1, .right, 1, false, 2, .center, 0),
-            "+1.5c2.3x2":   (false, 1.5, .center, 2.3, false, 2, .center, 0),
-            "*+1.23x*-2.23":(true, 1.23, .center, 0, true, -2.23, .center, 0),
-            "*-1.2l-5.6x*+2.3b+5.3":(true, -1.2, .left, -5.6, true, 2.3, .bottom, 5.3)
+        selector:GlyphSelector,
+        width:Width, height:Height,
+        description:String)] = [
+            "~":            (.normal, Width(multiple: true, value: 1, anchor: .center, offset: 0), Height(multiple: true, value: 1, anchor: .center, offset: 0), ""),
+            "1":            (.normal, Width(multiple: false, value: 1, anchor: .center, offset: 0), Height(multiple: false, value: 1, anchor: .center, offset: 0), ""),
+            "1:active":     (.active, Width(multiple: false, value: 1, anchor: .center, offset: 0), Height(multiple: false, value: 1, anchor: .center, offset: 0), ""),
+            "1c1":          (.normal, Width(multiple: false, value: 1, anchor: .center, offset: 1), Height(multiple: false, value: 1, anchor: .center, offset: 1), ""),
+            "*1r":          (.normal, Width(multiple: true, value: 1, anchor: .right, offset: 0), Height(multiple: true, value: 1, anchor: .bottom, offset: 0), ""),
+            "1x2":          (.normal, Width(multiple: false, value: 1, anchor: .center, offset: 0), Height(multiple: false, value: 2, anchor: .center, offset: 0), ""),
+            "1l1x2c2":      (.normal, Width(multiple: false, value: 1, anchor: .left, offset: 1), Height(multiple: false, value: 2, anchor: .center, offset: 2), ""),
+            "1c-1x2":       (.normal, Width(multiple: false, value: 1, anchor: .center, offset: -1), Height(multiple: false, value: 2, anchor: .center, offset: 0), ""),
+            "*1r+1x2":      (.normal, Width(multiple: true, value: 1, anchor: .right, offset: 1), Height(multiple: false, value: 2, anchor: .center, offset: 0), ""),
+            "+1.5c2.3x2":   (.normal, Width(multiple: false, value: 1.5, anchor: .center, offset: 2.3), Height(multiple: false, value: 2, anchor: .center, offset: 0), ""),
+            "*+1.23x*-2.23":(.normal, Width(multiple: true, value: 1.23, anchor: .center, offset: 0), Height(multiple: true, value: -2.23, anchor: .center, offset: 0), ""),
+            "*-1.2l-5.6x*+2.3b+5.3":(.normal, Width(multiple: true, value: -1.2, anchor: .left, offset: -5.6), Height(multiple: true, value: 2.3, anchor: .bottom, offset: 5.3), "")
         ]
     
     func test_parse_initValues() {
         for (value, expected) in initValues {
             if let actual = GlyphSize(value) { XCTAssert(
-                actual.widthMultiple == expected.widthMultiple &&
-                    actual.width == expected.width &&
-                    actual.widthAnchor == expected.widthAnchor &&
-                    actual.widthOffset == expected.widthOffset &&
-                    actual.heightMultiple == expected.heightMultiple &&
-                    actual.height == expected.height &&
-                    actual.heightAnchor == expected.heightAnchor &&
-                    actual.heightOffset == expected.heightOffset,
-                "\(value)"
-            )}
+                actual.width == expected.width && actual.width == expected.width && actual.height == expected.height,
+                "\(value)")
+                XCTAssertEqual(actual.description, expected.description)
+            }
             else { XCTAssert(false, "\(value)!") }
         }
     }

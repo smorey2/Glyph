@@ -110,7 +110,7 @@ class BarcodeDetector: NSObject {
             changed = true
             
             // GlyphContext and Load
-            let context = GlyphContext(payload)
+            let context = GlyphContext(payload, refresh: {})
             guard let url = context.url else {
                 foundBarcodes[payload] = BarcodeResult(
                     version: self.version,
